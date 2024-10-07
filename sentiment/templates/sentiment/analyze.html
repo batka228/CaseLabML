@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализ отзыва</title>
+</head>
+<body>
+    <h1>Анализ отзыва</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Анализировать</button>
+    </form>
+
+    {% if result %}
+        <h2>Результат анализа:</h2>
+        <p>Тип отзыва: <strong>{{ result.sentiment }}</strong></p>
+        <p>Рейтинг отзыва: <strong>{{ result.rating }}</strong></p>
+    {% endif %}
+</body>
+</html>
