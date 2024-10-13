@@ -4,17 +4,25 @@ from transformers import DistilBertTokenizer, DistilBertModel
 from transformers import DistilBertTokenizer
 
 class SentimentRegressor(nn.Module):
-    def __init__(self, pretrained_model, dropout=0.3):
+    def __init__(self, pretrained_model, dropout=0.2):
         super(SentimentRegressor, self).__init__()
         self.bert = pretrained_model
         self.dropout = nn.Dropout(dropout)
-        self.regressor = nn.Linear(768, 1)
+        self.fc1 = nn.Linear(768, 512)
+        self.fc2 = nn.Linear(512, 1)
+        self.relu = nn.ReLU()
 
     def forward(self, input_ids, attention_mask):
         outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask)
         pooled_output = outputs.last_hidden_state[:, 0]
         pooled_output = self.dropout(pooled_output)
-        return self.regressor(pooled_output)
+
+        x = self.fc1(pooled_output)
+        x = self.relu(x)
+
+        x = self.fc2(x)
+
+        return x
     
 
 
@@ -22,11 +30,11 @@ class SentimentRegressor(nn.Module):
 pretrained_model = DistilBertModel.from_pretrained('distilbert-base-uncased')
 model = SentimentRegressor(pretrained_model=pretrained_model)
 
-model.load_state_dict(torch.load("/home/oleg/model/sentiment_regressor.pth", map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("/home/oleg/model/content/model/sentiment_regressor.pth", map_location=torch.device('cpu')))
 
 
 
-model_path = "/home/oleg/model"
+model_path = "/home/oleg/model/content/model"
 
 
 tokenizer = DistilBertTokenizer.from_pretrained(model_path)

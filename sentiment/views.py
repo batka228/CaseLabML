@@ -11,7 +11,6 @@ def analyze_review(request):
             review_text = form.cleaned_data['review_text']
             rating = predict_sentiment(review_text)
 
-            # Определение позитивности или негативности
             if rating >= 7:
                 sentiment = "Положительный"
             elif rating <= 4:
@@ -21,7 +20,7 @@ def analyze_review(request):
 
             result = {
                 'sentiment': sentiment,
-                'rating': round(rating, 2)
+                'rating': round(rating)
             }
     else:
         form = ReviewForm()
