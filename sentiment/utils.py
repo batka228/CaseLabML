@@ -30,11 +30,11 @@ class SentimentRegressor(nn.Module):
 pretrained_model = DistilBertModel.from_pretrained('distilbert-base-uncased')
 model = SentimentRegressor(pretrained_model=pretrained_model)
 
-model.load_state_dict(torch.load("/home/oleg/model/content/model/sentiment_regressor.pth", map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("~/model/sentiment_regressor.pth", map_location=torch.device('cpu')))
 
 
 
-model_path = "/home/oleg/model/content/model"
+model_path = "~/model"
 
 
 tokenizer = DistilBertTokenizer.from_pretrained(model_path)
